@@ -1,0 +1,90 @@
+.body {
+  overflow: hidden;
+}
+
+.leaflet-tooltip{
+  background-color: rgb(255,255,255,0.8);
+}
+
+.h5 {
+   font-size: 0.5rem !important;
+   color: black !important;
+}
+
+.h3 {
+  color: black !important;
+}
+
+.p {
+  font-size: 1rem !important;
+  color: black !important;
+}
+
+.shiny-input-container {
+  font-size: 1.5rem !important;
+  width: 100%;
+  overflow: display;
+}
+
+.navbar-header {
+  margin-top: 1rem;
+  margin-bottom: -1rem;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.sidebar {
+  overflow-x: hidden !important;
+  background-color: #d7ebf5 !important;
+  color: var(--heavy-blue) !important;
+}
+.sidebar-content {
+  padding-left: 5% !important;
+  padding-right: 5% !important;
+}
+
+.selectize-input,.filter-option {
+  font-size: 1rem !important;
+}
+
+.irs-grid-text {
+  font-size: 0.65rem !important;
+}
+
+.accordion-button:not(.collapsed){
+  background: #168eb075;
+}
+
+.unhooked-btn {
+  background: grey;
+}
+
+.hide_panel {
+  display: hidden;
+}
+
+.navbar-static-top {
+  background: var(--heavy-blue);
+}
+
+.custom-tooltip {
+  background: #e6e6e6;
+  border: 1px solid black;
+  position: absolute;
+  top: 0px; left: 0px;
+  width: auto;
+  z-index: 1000;
+  display: none;
+  pointer-events: none;
+}
+
+.title-text {
+  color: white !important;
+}
+
+:root {
+  --bs-heading-color: black !important;
+  --heavy-blue: #4475ad;
+}

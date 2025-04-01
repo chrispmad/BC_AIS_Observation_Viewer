@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*gpkg
+*csv
+*xlsx
+*rds
+app/rsconnect/**
+data/**
+publishing_results/**
+*Rproj
