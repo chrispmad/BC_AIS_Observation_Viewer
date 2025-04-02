@@ -73,7 +73,7 @@ ui = bslib::page_navbar(
   shiny::includeScript('www/js/tooltip_generator.js'),
   # tags$head(tags$script(src = "www/js/script.js")),
   theme = bcinv_theme,
-  title = h3('BC AIS Observation Viewer',id = 'app_title',class='title-text'),
+  title = h3('BC Invasive Species Occurrence Viewer',id = 'app_title',class='title-text'),
   bslib::nav_panel(
     title = "Map",
     layout_sidebar(

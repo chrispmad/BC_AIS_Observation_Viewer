@@ -1,11 +1,11 @@
 server <- function(input, output, session) {
-  if(!stringr::str_detect(getwd(),"www/$")) setwd(paste0(getwd(),"/www/"))
+  # if(!stringr::str_detect(getwd(),"www/$")) setwd(paste0(getwd(),"/www/"))
 
-  ais_occ = sf::read_sf("occ_ais.gpkg")
+  ais_occ = sf::read_sf("www/occ_ais.gpkg")
 
-  terr_occ = sf::read_sf("occ_terr.gpkg")
+  terr_occ = sf::read_sf("www/occ_terr.gpkg")
 
-  nr_regs = sf::read_sf("nr_regions.gpkg") |>
+  nr_regs = sf::read_sf("www/nr_regions.gpkg") |>
     dplyr::mutate(reg_name = stringr::str_remove(ORG_UNIT_NAME, " Natural.*")) |>
     dplyr::select(reg_name)
 
@@ -56,13 +56,21 @@ server <- function(input, output, session) {
     ui_output
   })
 
+  # Reactives that are basically just the species names inputs.
+  aq_sp_f = reactive({
+    input$aq_species_select
+  })
+  terr_sp_f = reactive({
+    input$terr_species_select
+  })
+
   # Filtered form of data.
   ais_f = reactive({
     req(!is.null(ais_occ))
     # req(nrow(ais_occ) > 0)
 
     if(input$species_or_region_select == 'Species'){
-      req(!is.null(input$aq_species_select))
+      # req(!is.null(input$aq_species_select))
       dat_output = ais_occ |>
         dplyr::filter(Species %in% input$aq_species_select)
     }
@@ -99,13 +107,6 @@ server <- function(input, output, session) {
 
     # Filter records based on date filter.
     dat_output = dat_output |>
-      # Massage date field into full date format, or NA
-      dplyr::mutate(
-        Date = dplyr::case_when(
-          stringr::str_detect(Date,"^[0-9]{4}$") ~ lubridate::ymd(paste0(Date,"-01-01")),
-          stringr::str_detect(Date,"[0-9]{4}-[0-9]{2}-[0-9]{2}") ~ lubridate::ymd(Date),
-          T ~ NA
-        )) |>
       # Apply date filter.
       dplyr::filter(is.na(Date) | (Date >= input$date_filter[1] & Date <= input$date_filter[2]))
 
@@ -133,7 +134,7 @@ server <- function(input, output, session) {
 
   terr_marker_tbls = reactive({
     leafpop::popupTable(
-      ais_f() |>
+      terr_f() |>
         sf::st_drop_geometry()
     )
   })
@@ -164,42 +165,64 @@ server <- function(input, output, session) {
     leaflet::colorFactor('Spectral', domain = unique(terr_f()$Species))
   })
 
+  # Catch state where we have absolutely 0 species to add to the map.
+  blank_map = reactive({
+    if(is.null(aq_sp_f()) & is.null(terr_sp_f())){
+      return(TRUE)
+    } else {
+      return(FALSE)
+    }
+  })
+
   observe({
     req(!is.null(ais_f()) & !is.null(terr_f()))
+    # No species selected? No problem! Add an invisible thingy to the map.
 
-    leafletProxy('leafmap') |>
+    # if(blank_map()) print('No species for map!')
+    if(is.null(aq_sp_f())) print("No aquatics for map!")
+    if(is.null(terr_sp_f())) print("No terrestrials for map!")
+
+    l = leafletProxy('leafmap') |>
       leaflet::removeControl('aq_legend') |>
       leaflet::removeControl('terr_legend') |>
       clearGroup('aq_occurrence_markers') |>
-      clearGroup('terr_occurrence_markers') |>
-      addCircleMarkers(
-        data = ais_f(),
-        label = lapply(aq_marker_tbls(), htmltools::HTML),
-        popup = lapply(aq_marker_tbls(), htmltools::HTML),
-        fillColor = ~aq_species_pal()(Species),
-        fillOpacity = 0.8,
-        radius = 6,
-        color = 'black',
-        weight = 1,
-        group = 'aq_occurrence_markers'
-      ) |>
-      addLegend(layerId = 'aq_legend',
-                title = "Aquatic",
-                pal = aq_species_pal(), values = ais_f()$Species) |>
-      addCircleMarkers(
-        data = terr_f(),
-        label = lapply(terr_marker_tbls(), htmltools::HTML),
-        popup = lapply(terr_marker_tbls(), htmltools::HTML),
-        fillColor = ~terr_species_pal()(Species),
-        fillOpacity = 0.8,
-        radius = 6,
-        color = 'black',
-        weight = 1,
-        group = 'terr_occurrence_markers'
-      ) |>
-      addLegend(layerId = 'terr_legend',
-                title = "Terrestrial",
-                pal = terr_species_pal(), values = terr_f()$Species)
+      clearGroup('terr_occurrence_markers')
+
+    if(nrow(ais_f()) > 0){
+      l = l |>
+        addCircleMarkers(
+          data = ais_f(),
+          label = lapply(aq_marker_tbls(), htmltools::HTML),
+          popup = lapply(aq_marker_tbls(), htmltools::HTML),
+          fillColor = ~aq_species_pal()(Species),
+          fillOpacity = 0.8,
+          radius = 6,
+          color = 'black',
+          weight = 1,
+          group = 'aq_occurrence_markers'
+        ) |>
+        addLegend(layerId = 'aq_legend',
+                  title = "Aquatic",
+                  pal = aq_species_pal(), values = ais_f()$Species)
+    }
+    if(nrow(terr_f()) > 0){
+      l = l |>
+        addCircleMarkers(
+          data = terr_f(),
+          label = lapply(terr_marker_tbls(), htmltools::HTML),
+          popup = lapply(terr_marker_tbls(), htmltools::HTML),
+          fillColor = ~terr_species_pal()(Species),
+          fillOpacity = 0.8,
+          radius = 6,
+          color = 'black',
+          weight = 1,
+          group = 'terr_occurrence_markers'
+        ) |>
+        addLegend(layerId = 'terr_legend',
+                  title = "Terrestrial",
+                  pal = terr_species_pal(), values = terr_f()$Species)
+    }
+    return(l)
   })
 
   # # # Download Buttons # # #
