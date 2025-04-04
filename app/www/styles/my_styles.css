@@ -1,9 +1,10 @@
-.body {
-  overflow: hidden;
+:root {
+  --bs-heading-color: black !important;
+  --heavy-blue: #4475ad;
 }
 
-.leaflet-tooltip{
-  background-color: rgb(255,255,255,0.8);
+.body {
+  overflow: hidden;
 }
 
 .h5 {
@@ -24,6 +25,37 @@
   font-size: 1.5rem !important;
   width: 100%;
   overflow: display;
+}
+
+.shiny-options-group {
+  font-size: medium;
+}
+
+.shiny-minibutton {
+  position: absolute;
+  z-index: 1000;
+  width: 1rem;
+  height: 1rem;
+  border: solid 1px black;
+  background: #999 url('https://cdn-icons-png.flaticon.com/512/2985/2985150.png') 0 0 no-repeat;
+  background-size: contain;
+  rotate: 180deg;
+  pointer-events: all;
+  transition: all 0.5s linear;
+}
+
+.shrink-leg {
+  transform: scale(1,0) !important;
+  border: solid 2px black;
+}
+
+.minibutton-closed {
+
+}
+
+.control-label {
+  font-size: large;
+  margin-top: -1rem !important;
 }
 
 .navbar-header {
@@ -84,7 +116,9 @@
   color: white !important;
 }
 
-:root {
-  --bs-heading-color: black !important;
-  --heavy-blue: #4475ad;
+.btn-info {
+  display:grid;
+  height: 8vh;
+  margin-top:1.5rem;
+  padding: 10px;
 }

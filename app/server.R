@@ -14,8 +14,8 @@ server <- function(input, output, session) {
     if(input$species_or_region_select == 'Species'){
       ui_output = tagList(
         # h3("Select Species",style="margin-bottom:-0.75rem;"),
-        layout_column_wrap(
-          width = 1/2,
+        div(
+          # width = 1/2,
           pickerInput(
             'aq_species_select',"Aquatic",
             choices = unique(ais_occ$Species),
@@ -37,7 +37,8 @@ server <- function(input, output, session) {
               liveSearch = TRUE,
               selectedTextFormat = "count > 3",
               actionsBox = TRUE)
-          )
+          ),
+          style = 'margin-top:-2rem;'
         )
       )
     }
@@ -175,12 +176,6 @@ server <- function(input, output, session) {
   })
 
   observe({
-    req(!is.null(ais_f()) & !is.null(terr_f()))
-    # No species selected? No problem! Add an invisible thingy to the map.
-
-    # if(blank_map()) print('No species for map!')
-    if(is.null(aq_sp_f())) print("No aquatics for map!")
-    if(is.null(terr_sp_f())) print("No terrestrials for map!")
 
     l = leafletProxy('leafmap') |>
       leaflet::removeControl('aq_legend') |>
@@ -220,10 +215,15 @@ server <- function(input, output, session) {
         ) |>
         addLegend(layerId = 'terr_legend',
                   title = "Terrestrial",
+                  position = 'topleft',
+                  # className = 'scrollable leaflet legend',
                   pal = terr_species_pal(), values = terr_f()$Species)
     }
+    # Run javascript code to add scroll bars and minimizing buttons to leaflet legends.
+    shinyjs::runjs(code = paste0(readLines('www/js/legend_extension.js'), collapse = "\n"))
     return(l)
   })
+
 
   # # # Download Buttons # # #
 

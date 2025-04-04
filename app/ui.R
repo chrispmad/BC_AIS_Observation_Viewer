@@ -29,7 +29,14 @@ proviso_dialogue = modalDialog(
 
 the_sidebar = bslib::sidebar(
   width = '25%',
-  radioButtons('species_or_region_select',"Select By...",choices = c("Species","Region"), selected = "Species"),
+  div(
+    radioButtons(
+      'species_or_region_select',
+      "Select By...",
+      choices = c("Species","Region"),
+      selected = "Species",
+      inline = T),
+    style = 'margin-top:-2rem;'),
   uiOutput('sp_or_reg_filter'),
   sliderInput('date_filter',"Date Filter",
               value = c(lubridate::ymd("1939-01-01"),
@@ -44,6 +51,16 @@ the_sidebar = bslib::sidebar(
       csv_dl_but,
       geopackage_dl_but
     )
+  ),
+  div(
+    capture::capture(
+      selector = 'body',
+      filename = paste0("BC_IS_Occ_Viewer_",Sys.Date(),"_screenshot.png"),
+      shiny::icon("camera"),
+      "Screen Capture",
+      class = 'btn-info'
+    ),
+    style = 'display:grid;'
   )
 )
 
