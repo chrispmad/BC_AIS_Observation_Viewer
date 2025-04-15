@@ -18,6 +18,7 @@ terr_pr_sp = pr_sp |>
     name == "White Nose Syndrome - Bats" ~ "White Nose Syndrome",
     name == "" ~ "White Nose Syndrome",
     name == "White Nose Syndrome - Bats" ~ "White Nose Syndrome",
+    T ~ name
   )) |>
   dplyr::filter(!name %in% c("Zebra & Quagga Mussels"))
 
@@ -25,6 +26,9 @@ terr_pr_sp = pr_sp |>
 tir = read_excel(paste0(terr_lan_root,"Master Terrestrial Incidence Report Records.xlsx"), sheet = 'Terrestrial Reports')
 # Filter for confirmed reports!
 tir = tir |> dplyr::filter(ID_Confirmation == "Confirmed")
+# Also, filter for just priority species.
+tir = tir |>
+  dplyr::filter(Submitted_Scientific_Name %in% paste0(terr_pr_sp$genus," ",terr_pr_sp$species))
 
 species_search_string = paste0(terr_pr_sp$genus," ",terr_pr_sp$species)
 
@@ -50,4 +54,8 @@ terr_occs = terr_occs |>
 
 terr_obvs = dplyr::bind_rows(tir_sf, terr_occs)
 
-saveRDS(terr_obvs, "data/terr_occ_dat.rds")
+# Filter for priority species!
+terr_obvs_f = terr_obvs |>
+  dplyr::filter(Species %in% terr_pr_sp$name)
+
+saveRDS(terr_obvs_f, "data/terr_occ_dat.rds")

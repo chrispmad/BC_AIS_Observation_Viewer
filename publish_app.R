@@ -1,4 +1,4 @@
-cat("This script updates the BC Invasives Dashboard (https://chrispmadsen.shinyapps.io/bc_invasives_dashboard/)\n")
+cat("This script updates the public-facing BC Invasives Dashboard (https://bcgov-env.shinyapps.io/BC_IS_Occ_Viewer/)\n")
 
 invisible(library(tidyverse))
 

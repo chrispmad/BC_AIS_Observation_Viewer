@@ -10,6 +10,9 @@ ais_occ = sf::read_sf("data/occ_dat.gpkg") |>
 
 terr_occ = readr::read_rds("data/terr_occ_dat.rds")
 
+pr_sp = readr::read_csv("app/www/priority_species_table.csv") |>
+  dplyr::filter()
+
 nr_regs = sf::read_sf("app/www/nr_regions.gpkg") |>
   dplyr::mutate(reg_name = stringr::str_remove(ORG_UNIT_NAME, " Natural.*")) |>
   dplyr::select(reg_name)
