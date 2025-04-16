@@ -37,20 +37,54 @@
   width: 1rem;
   height: 1rem;
   border: solid 1px black;
-  background: #999 url('https://cdn-icons-png.flaticon.com/512/2985/2985150.png') 0 0 no-repeat;
-  background-size: contain;
-  rotate: 180deg;
+  border-radius: 35%;
+  /*rotate: var(--minibutton-rotate);*/
   pointer-events: all;
+  transition: all 0.5s linear;
+  cursor: pointer;
+}
+
+.shiny-minibutton::before {
+  --scale: 0;
+  --tooltip_colour: black;
+  position: absolute;
+  top: -.25rem; left: 50%;
+  width: fit-content;
+  display: flex;
+  color: var(--tooltip_colour);
+  content: 'Click to show/hide legend';
+  padding: .5rem;
+  border: solid 1px var(--tooltip_colour);
+  border-radius: .3rem;
+  text-align: center;
+  transform: translateX(-50%) translateY(-100%) scale(var(--scale));
+  transition: all 250ms ease-in-out;
+  transform-origin: bottom center;
+  background: white;
+}
+
+.shiny-minibutton:hover::before {
+  --scale: 1;
+}
+
+.minibutton-background {
+  position: absolute;
+  top: 0px; left: 0px;
+  transform: rotate(180deg);
+  width: 100%; height: 100%;
+  border: solid 1px transparent;
+  border-radius: .5rem;
+  z-index: -1;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/2985/2985150.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
   transition: all 0.5s linear;
 }
 
 .shrink-leg {
   transform: scale(1,0) !important;
   border: solid 2px black;
-}
-
-.minibutton-closed {
-
 }
 
 .control-label {

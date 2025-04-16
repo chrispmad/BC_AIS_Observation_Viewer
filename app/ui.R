@@ -86,9 +86,7 @@ bcinv_theme = bslib::bs_theme(
 ui = bslib::page_navbar(
   shinyjs::useShinyjs(),
   shiny::includeCSS('www/styles/my_styles.css'),
-  # tags$head(tags$style(src = "www/css/my_styles.css")),
   shiny::includeScript('www/js/tooltip_generator.js'),
-  # tags$head(tags$script(src = "www/js/script.js")),
   theme = bcinv_theme,
   title = h3('BC Invasive Species Occurrence Viewer',id = 'app_title',class='title-text'),
   bslib::nav_panel(
@@ -97,7 +95,8 @@ ui = bslib::page_navbar(
       main_page,
       sidebar = the_sidebar,
       proviso_dialogue,
-      tooltip
+      tooltip#,
+      # mouse_mirage
     )
   )
 )

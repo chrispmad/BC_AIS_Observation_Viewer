@@ -13,6 +13,7 @@ function delete_old_minibuttons(){
 
 const observer = new MutationObserver(function(mutations, observer) {
   // Find leaflet elements
+  let doc_body = document.getElementsByTagName('body')[0];
   let leaf_window = document.getElementById('leafmap');
   let leaf_legends = document.getElementsByClassName('legend');
 
@@ -45,26 +46,30 @@ const observer = new MutationObserver(function(mutations, observer) {
       defunct_button.remove()
     }
 
+    // Create minibutton instance and assign static styling parameters.
     let minibutton = document.createElement('div');
+    let mb_bg = document.createElement('img');
     minibutton.id = 'minibutton-' + i;
     minibutton.style.zIndex = 1000;
-    minibutton.style.top = ll.parentElement.offsetHeight + 'px'
-    minibutton.style.left = ll.offsetLeft + 'px'
+    minibutton.style.top = ll.getBoundingClientRect().y + ll.offsetHeight + 'px';
+    minibutton.style.left = ll.getBoundingClientRect().x + 'px';
     minibutton.classList.add('shiny-minibutton');
-    ll.parentElement.appendChild(minibutton);
+    mb_bg.classList.add('minibutton-background');
+    minibutton.appendChild(mb_bg);
+    doc_body.appendChild(minibutton);
 
     // Add observer for minibutton.
     document.getElementById('minibutton-' + i).addEventListener('click', function() {
       leaf_legends[i].classList.toggle('shrink-leg');
-      //document.getElementById('minibutton-' + i).classList.toggle('minibutton-closed');
       document.getElementById('minibutton-' + i).classList.toggle('minibutton-closed');
       if(document.getElementById('minibutton-' + i).classList.contains('minibutton-closed')){
-        document.getElementById('minibutton-' + i).style.transform = 'translateY(' + ll.offsetHeight/2 + 'px) rotate(180deg)'
+        document.getElementById('minibutton-' + i).style.transform = 'translateY(-' + ll.offsetHeight/2 + 'px)'
+        document.getElementById('minibutton-' + i).children[0].style.transform = 'rotate(0deg)'
       } else {
         document.getElementById('minibutton-' + i).style.transform = '';
+        document.getElementById('minibutton-' + i).children[0].style.transform = 'rotate(180deg)';
       }
     })
-    //leaf_legends[i].parentElement.appendChild(minibutton);
 
     console.log('styles set and child appended');
   }
