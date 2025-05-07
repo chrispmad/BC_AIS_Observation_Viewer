@@ -9,6 +9,9 @@ server <- function(input, output, session) {
     dplyr::mutate(reg_name = stringr::str_remove(ORG_UNIT_NAME, " Natural.*")) |>
     dplyr::select(reg_name)
 
+  ais_species_list = unique(ais_occ$Species)[order(unique(ais_occ$Species))]
+  terr_species_list = unique(terr_occ$Species)[order(unique(terr_occ$Species))]
+
   output$sp_or_reg_filter = renderUI({
     req(!is.null(ais_occ))
     if(input$species_or_region_select == 'Species'){
@@ -18,8 +21,8 @@ server <- function(input, output, session) {
           # width = 1/2,
           pickerInput(
             'aq_species_select',"Aquatic",
-            choices = unique(ais_occ$Species),
-            selected = unique(ais_occ$Species)[1],
+            choices = ais_species_list,
+            selected = ais_species_list[1],
             multiple = TRUE,
             options = pickerOptions(
               container = "body",
@@ -29,8 +32,8 @@ server <- function(input, output, session) {
           ),
           pickerInput(
             'terr_species_select',"Terrestrial",
-            choices = unique(terr_occ$Species),
-            selected = unique(terr_occ$Species)[1],
+            choices = terr_species_list,
+            selected = terr_species_list[1],
             multiple = TRUE,
             options = pickerOptions(
               container = "body",
