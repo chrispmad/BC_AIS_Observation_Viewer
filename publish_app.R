@@ -41,16 +41,16 @@ source("preprocess_occ_recs.R")
 
 # 1) Native Range
 ## Ecological Drainage Units
-np_native_range = bcdc_query_geodata("eaubc-ecological-drainage-units") |>
-  filter(ECO_DRAINAGE_UNIT %in% c("Alsek","North Coastal","Lewes","Nakina",
+np_native_range = bcdata::bcdc_query_geodata("eaubc-ecological-drainage-units") |>
+  bcdata::filter(ECO_DRAINAGE_UNIT %in% c("Alsek","North Coastal","Lewes","Nakina",
                                   "Teslin","Upper Stikine","Upper Liard","Taku",
                                   "Lower Liard","Lower Peace","Hay")) |>
-  collect() |>
+  bcdata::collect() |>
   sf::st_transform(4326)
 
-walleye_native_range = bcdc_query_geodata("eaubc-ecological-drainage-units") |>
-  filter(ECO_DRAINAGE_UNIT %in% c("Upper Liard","Lower Liard","Hay","Lower Peace")) |>
-  collect() |>
+walleye_native_range = bcdata::bcdc_query_geodata("eaubc-ecological-drainage-units") |>
+  bcdata::filter(ECO_DRAINAGE_UNIT %in% c("Upper Liard","Lower Liard","Hay","Lower Peace")) |>
+  bcdata::collect() |>
   sf::st_transform(4326)
 
 native_range_occs = dplyr::bind_rows(
