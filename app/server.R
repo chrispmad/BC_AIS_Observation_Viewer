@@ -3,6 +3,8 @@ server <- function(input, output, session) {
 
   ais_occ = sf::read_sf("www/occ_ais.gpkg")
 
+  # Other types of AIS records: eradicated, native range, and anecdotal reports.
+
   terr_occ = sf::read_sf("www/occ_terr.gpkg")
 
   nr_regs = sf::read_sf("www/nr_regions.gpkg") |>
