@@ -6,7 +6,7 @@ invisible(library(tidyverse))
 # publish this app has failed; if so, don't attempt any of the stuff below,
 # as that will very likely fail again.
 
-lan_folder = "//SFP.IDIR.BCGOV/S140/S40203/RSD_ FISH & AQUATIC HABITAT BRANCH/General/"
+lan_folder = "//SFP.IDIR.BCGOV/S140/S40203/WFC AEB/General/"
 proj_wd = getwd()
 onedrive_wd = paste0(str_extract(getwd(),"C:/Users/[A-Z]+/"),"OneDrive - Government of BC/data/")
 

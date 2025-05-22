@@ -6,7 +6,7 @@ library(tabulapdf)
 
 proj_wd = getwd()
 terr_lan_root = "//SFP.IDIR.BCGOV/S140/S40203/Ecosystems/Conservation Science/Invasive Species/SPECIES/5_Incidental Observations/"
-aq_lan_root = "//SFP.IDIR.BCGOV/S140/S40203/RSD_ FISH & AQUATIC HABITAT BRANCH/General/2 SCIENCE - Invasives/SPECIES/5_Incidental Observations/"
+aq_lan_root = "//SFP.IDIR.BCGOV/S140/S40203/WFC AEB/General/2 SCIENCE - Invasives/SPECIES/5_Incidental Observations/"
 
 # Read in priority species from updated PDF document.
 pr_sp_tbls = tabulapdf::extract_tables(file = "https://www2.gov.bc.ca/assets/gov/environment/plants-animals-and-ecosystems/invasive-species/publications/provincial_priority_is_list.pdf")
